@@ -44,13 +44,13 @@ void MainWindow::LoadSettings()
     ui->OptName->setText(Param.value("Ticket","Si87000BJ6D").toString());
     ui->PositionVolume->setValue(Param.value("PositionVolume", 10).toUInt());
     ui->StepVolume->setValue(Param.value("StepVolume", 1).toUInt());
-    ui->StepPrice->setValue(Param.value("StepPrice", 1).toUInt());
-    ui->StartPrice->setValue(Param.value("StartPrice", 100).toUInt());
+    ui->StepPrice->setValue(Param.value("StepPrice", 1).toDouble());
+    ui->StartPrice->setValue(Param.value("StartPrice", 100).toDouble());
     ui->ClassCode->setCurrentIndex(Param.value("Calss", 1).toUInt());
     ui->OrderType->setCurrentIndex(Param.value("OrderType", 0).toUInt());
     on_OrderType_currentIndexChanged(Param.value("OrderType", 0).toUInt());
-    ui->spread->setValue(Param.value("Spread", 0).toUInt());
-    ui->Offset->setValue(Param.value("Offset", 0).toUInt());
+    ui->spread->setValue(Param.value("Spread", 0).toDouble());
+    ui->Offset->setValue(Param.value("Offset", 0).toDouble());
     GlobalToken=Param.value("Token","").toString();
     if(GlobalToken.size()==0)
     {

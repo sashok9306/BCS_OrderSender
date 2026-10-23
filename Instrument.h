@@ -13,10 +13,13 @@ struct BookTrade
     double Price;
     double Volume;
 };
-struct LimitOrder
+struct MoexOrder
 {
     QString OrderId;
+    int type;       //0-лимитка
     double Price;
+    double Offset;
+    double Spread;
     double Volume;
     Operation Op;
 };
@@ -59,7 +62,7 @@ public:
     void SetParam(QString Ticker, QString ClassCode);
     QString GetTicker();
     QString GetClassCode();
-    void SetOrderList(QList<LimitOrder> Orders);
+    void SetOrderList(QList<MoexOrder> Orders);
     // Запуск в отдельном потоке
     void StartInThread();
 public slots:
@@ -71,7 +74,7 @@ signals:
     void CurrentPrice(double Ask,double Bid);
     void SendOrder(int volume, Operation op);
     void Message(QString Message);
-    void CurrentOrdersRecived(QList<LimitOrder> orders);
+    void CurrentOrdersRecived(QList<MoexOrder> orders);
 private slots:
     void AppendTrade(BookTrade Trade);
     void UpdateBook(double  ASK, double BID);
@@ -84,7 +87,7 @@ private:
     double _BID=0;
     int Volume;
     BookTrade CurrentPriceStruct;
-    QList<LimitOrder> _Orders;
+    QList<MoexOrder> _Orders;
     QThread *_thread;
     //BIDs;
 };

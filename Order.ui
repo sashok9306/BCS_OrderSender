@@ -6,18 +6,54 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>479</width>
-    <height>45</height>
+    <width>679</width>
+    <height>43</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
     <widget class="QLabel" name="Side">
+     <property name="minimumSize">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
      <property name="text">
-      <string>Направление</string>
+      <string> </string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="Vol">
+     <property name="text">
+      <string>1</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="Side_2">
+     <property name="text">
+      <string>Цена</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDoubleSpinBox" name="Price">
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+     <property name="maximum">
+      <double>99999999.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>0.500000000000000</double>
      </property>
     </widget>
    </item>
@@ -35,7 +71,34 @@
     </spacer>
    </item>
    <item>
-    <widget class="QDoubleSpinBox" name="Price">
+    <widget class="QLabel" name="Side_3">
+     <property name="text">
+      <string>Отступ</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDoubleSpinBox" name="offset">
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+     </property>
+     <property name="maximum">
+      <double>99999999.000000000000000</double>
+     </property>
+     <property name="singleStep">
+      <double>0.500000000000000</double>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="Side_4">
+     <property name="text">
+      <string>Спред</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDoubleSpinBox" name="Spread">
      <property name="alignment">
       <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
      </property>

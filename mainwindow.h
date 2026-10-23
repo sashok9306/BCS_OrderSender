@@ -32,13 +32,13 @@ private slots:
 
     void on_OrderType_currentIndexChanged(int index);
     void CancelOrder(QString OrderId,QListWidgetItem *Item);
-    void OrderChange(QString OrderId, double Price, Operation op, double quantity);
+    void OrderChange(QString OrderId, int _type, double Price, double Offset, double Spread, Operation op, double quantity);
 
     void on_ClassCode_currentIndexChanged(int index);
     void UpdateInstData();
 
     void on_OptName_editingFinished();
-    void OrdersRecived(QList<LimitOrder> orders);
+    void OrdersRecived(QList<MoexOrder> orders);
 
 private:
     Ui::MainWindow *ui;

@@ -1,4 +1,4 @@
-#ifndef ORDER_H
+﻿#ifndef ORDER_H
 #define ORDER_H
 
 #include "Instrument.h"
@@ -14,7 +14,7 @@ class Order : public QWidget
     Q_OBJECT
 
 public:
-    explicit Order(QString clientOrderId,double Price,Operation OrderOp,double RemainedQuantity,QListWidgetItem *Item,QWidget *parent = nullptr);
+    explicit Order(MoexOrder ord,QListWidgetItem *Item,QWidget *parent = nullptr);
     ~Order();
 
 private slots:
@@ -24,13 +24,10 @@ private slots:
 
 signals:
     void OrderCancel(QString OrderId,QListWidgetItem *Item);
-    void OrderChange(QString OrderId,double Price, Operation op,double quantity);
+    void OrderChange(QString OrderId,int _type,double Price,double Offset,double Spread, Operation op,double quantity);
 private:
     Ui::Order *ui;
-    QString _clientOrderId;
-    double _Price;
-    Operation _OrderOp;
-    double _RemainedQuantity;
+    MoexOrder _ORDER;
     QListWidgetItem *item;
 };
 

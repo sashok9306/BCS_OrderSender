@@ -55,10 +55,10 @@ QString Instrument::GetClassCode()
     return _ClassCode;
 }
 
-void Instrument::SetOrderList(QList<LimitOrder> Orders)
+void Instrument::SetOrderList(QList<MoexOrder> Orders)
 {
     _Orders=Orders;
-    std::sort(_Orders.begin(), _Orders.end(), [](const LimitOrder& a, const LimitOrder& b) {
+    std::sort(_Orders.begin(), _Orders.end(), [](const MoexOrder& a, const MoexOrder& b) {
         return a.Price > b.Price;
     });
     emit CurrentOrdersRecived(_Orders);

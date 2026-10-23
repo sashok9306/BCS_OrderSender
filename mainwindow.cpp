@@ -156,10 +156,13 @@ void MainWindow::CancelOrder(QString OrderId, QListWidgetItem *Item)
     //QTimer::singleShot(500,this,&MainWindow::UpdateInstData);
 }
 
-void MainWindow::OrderChange(QString OrderId, double Price, Operation op, double quantity)
+void MainWindow::OrderChange(QString OrderId,int _type,double Price,double Offset,double Spread, Operation op,double quantity)
 {
     BCS.CancelOrder(OrderId);
-    BCS.PlaceLimitOrder(CurrentInstrument,Price,quantity,op);
+    if(_type)
+        BCS.PlaceTakeProvit(CurrentInstrument,Price,Offset,Spread,quantity,op);
+    else
+        BCS.PlaceLimitOrder(CurrentInstrument,Price,quantity,op);
     QTimer::singleShot(500,this,&MainWindow::UpdateInstData);
 }
 
@@ -180,7 +183,7 @@ void MainWindow::on_OptName_editingFinished()
     UpdateInstData();
 }
 
-void MainWindow::OrdersRecived(QList<LimitOrder> orders)
+void MainWindow::OrdersRecived(QList<MoexOrder> orders)
 {
 
     // Удаляем с конца, чтобы индексы не сбивались
@@ -198,9 +201,9 @@ void MainWindow::OrdersRecived(QList<LimitOrder> orders)
     }
     for(int i=0;i<orders.size();i++)
     {
-        LimitOrder order=orders.at(i);
+        MoexOrder order=orders.at(i);
         QListWidgetItem *Item = new QListWidgetItem;
-        Order *NewOrder=new Order(order.OrderId,order.Price,order.Op,order.Volume,Item);
+        Order *NewOrder=new Order(order,Item);
         Item->setSizeHint(NewOrder->sizeHint());
         ui->OrderList->addItem(Item);
         ui->OrderList->setItemWidget(Item,NewOrder);

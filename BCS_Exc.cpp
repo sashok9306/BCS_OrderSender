@@ -246,6 +246,7 @@ void BCS_Exc::GetOrders(Instrument &Pair)
     Status.append(3);
     QJsonArray orderTypes;
     orderTypes.append(2);
+    orderTypes.append(5);
     QJsonArray tickers;
     tickers.append(Pair.GetTicker());
     QJsonArray ClassCode;
@@ -253,7 +254,7 @@ void BCS_Exc::GetOrders(Instrument &Pair)
     Order["orderStatus"]=Status;
     Order["tickers"]=tickers;
     Order["classCodes"]=ClassCode;
-    Order["orderTypes"]=orderTypes;
+    //Order["orderTypes"]=orderTypes;
 
     requestLocal.setUrl(QUrl("https://be.broker.ru/trade-api-bff-order-details/api/v1/orders/search"));
     QString Reguest = QJsonDocument(Order).toJson();
@@ -319,23 +320,35 @@ void BCS_Exc::OrderListResult()
     QJsonDocument doc = QJsonDocument::fromJson(ReplayData);
     QJsonObject Root = doc.object();
     QJsonArray Orders=Root["records"].toArray();
-    QList<LimitOrder> InstOrders;
+    QList<MoexOrder> InstOrders;
     for(int i=0;i<Orders.size();i++)
     {
         QString OrderId,Ticker,ClassCode; Operation op;
-        double Price; int Side; double remainedQuantityLots;
+        double Price,Offset=0,Spread=0; int Side; double remainedQuantityLots;
+        int type;
         QJsonObject CurrentOrder=Orders.at(i).toObject();
         OrderId=CurrentOrder["orderId"].toString();
         Ticker=CurrentOrder["ticker"].toString();
         ClassCode=CurrentOrder["classCode"].toString();
-        Price=CurrentOrder["price"].toDouble();
         Side=CurrentOrder["side"].toInt();
+        if(CurrentOrder["orderType"]==2)
+        {
+            type=0;
+            Price=CurrentOrder["price"].toDouble();
+        }
+        else
+        {
+            type=1;
+            Price=CurrentOrder["takePrice"].toDouble();
+            Offset=CurrentOrder["offset"].toDouble();
+            Spread=CurrentOrder["spread"].toDouble();
+        }
         if(Side==1)
             op=BUY;
         else
             op=SELL;
         remainedQuantityLots=CurrentOrder["remainedQuantityLots"].toInt();
-        LimitOrder newOrder={OrderId,Price,remainedQuantityLots,op};
+        MoexOrder newOrder={OrderId,type,Price,Offset,Spread,remainedQuantityLots,op};
         InstOrders.append(newOrder);
     }
     Instrument *inst = qobject_cast<Instrument *>(rep->parent());

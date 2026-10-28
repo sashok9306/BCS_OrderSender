@@ -102,7 +102,7 @@ void MainWindow::SendOrder()
     int OrderValue=ui->StepVolume->value();
     if(OrderValue>ui->PositionVolume->value())
         OrderValue=ui->PositionVolume->value();
-    int OrderPrice=ui->StartPrice->value();
+    double OrderPrice=ui->StartPrice->value();
     ui->StartPrice->setValue(OrderPrice-ui->StepPrice->value());
     ui->PositionVolume->setValue(ui->PositionVolume->value()-OrderValue);
     //тут отправка ордера

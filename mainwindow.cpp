@@ -47,6 +47,8 @@ void MainWindow::LoadSettings()
     ui->StepPrice->setValue(Param.value("StepPrice", 1).toDouble());
     ui->StartPrice->setValue(Param.value("StartPrice", 100).toDouble());
     ui->ClassCode->setCurrentIndex(Param.value("Calss", 1).toUInt());
+    ui->VolumeType->setCurrentIndex(Param.value("VolumeType", 1).toUInt());
+    on_VolumeType_currentIndexChanged(Param.value("VolumeType", 1).toUInt());
     ui->OrderType->setCurrentIndex(Param.value("OrderType", 0).toUInt());
     on_OrderType_currentIndexChanged(Param.value("OrderType", 0).toUInt());
     ui->spread->setValue(Param.value("Spread", 0).toDouble());
@@ -73,6 +75,7 @@ void MainWindow::SaveSettings()
     Param.setValue("StepPrice",ui->StepPrice->value());
     Param.setValue("StartPrice",ui->StartPrice->value());
     Param.setValue("Calss",ui->ClassCode->currentIndex());
+    Param.setValue("VolumeType",ui->VolumeType->currentIndex());
     Param.setValue("OrderType",ui->OrderType->currentIndex());
     Param.setValue("Spread",ui->spread->value());
     Param.setValue("Offset",ui->Offset->value());
@@ -99,13 +102,34 @@ void MainWindow::SendOrder()
         QTimer::singleShot(500,this,&MainWindow::UpdateInstData);
         return;
     }
-    int OrderValue=ui->StepVolume->value();
-    if(OrderValue>ui->PositionVolume->value())
-        OrderValue=ui->PositionVolume->value();
     double OrderPrice=ui->StartPrice->value();
-    ui->StartPrice->setValue(OrderPrice-ui->StepPrice->value());
-    ui->PositionVolume->setValue(ui->PositionVolume->value()-OrderValue);
-    //тут отправка ордера
+    int OrderValue;
+    if(ui->VolumeType->currentIndex())
+    {
+        OrderValue=ui->StepVolume->value();
+        if(OrderValue>ui->PositionVolume->value())
+            OrderValue=ui->PositionVolume->value();
+        ui->PositionVolume->setValue(ui->PositionVolume->value()-OrderValue);
+
+    }else
+    {
+        OrderValue=ui->StepVolume->value();
+        double MoneyValue=OrderValue*ui->StartPrice->value();
+        while(MoneyValue>ui->PositionVolume->value())
+        {
+            OrderValue--;
+            MoneyValue=OrderValue*ui->StartPrice->value();
+            if(OrderValue==0)
+            {
+                ui->PositionVolume->setValue(0);
+                TimForSendPos.stop();
+                return;
+            }
+        }
+        ui->StartPrice->setValue(OrderPrice-ui->StepPrice->value());
+        ui->PositionVolume->setValue(ui->PositionVolume->value()-MoneyValue);
+
+    }        //тут отправка ордера
     if(Bay)
     {
         ui->StartPrice->setValue(OrderPrice-ui->StepPrice->value());
@@ -211,5 +235,14 @@ void MainWindow::OrdersRecived(QList<MoexOrder> orders)
         connect(NewOrder,&Order::OrderChange,this,&MainWindow::OrderChange);
     }
 
+}
+
+
+void MainWindow::on_VolumeType_currentIndexChanged(int index)
+{
+    if(index)
+        ui->PositionVolume->setSuffix(" лот");
+    else
+        ui->PositionVolume->setSuffix(" руб");
 }
 

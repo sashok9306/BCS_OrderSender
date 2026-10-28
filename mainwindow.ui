@@ -72,35 +72,35 @@
             </item>
            </widget>
           </item>
-          <item row="1" column="0">
+          <item row="2" column="0">
            <widget class="QLabel" name="label_5">
             <property name="text">
              <string>Начальная цена</string>
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="3" column="0">
            <widget class="QLabel" name="label_7">
             <property name="text">
              <string>Отступ</string>
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
+          <item row="4" column="0">
            <widget class="QLabel" name="label_8">
             <property name="text">
              <string>Спред</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item row="5" column="0">
            <widget class="QLabel" name="label_2">
             <property name="text">
              <string>Суммарный объём</string>
             </property>
            </widget>
           </item>
-          <item row="4" column="1">
+          <item row="5" column="1">
            <widget class="QSpinBox" name="PositionVolume">
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -113,17 +113,20 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
+          <item row="6" column="0">
            <widget class="QLabel" name="label_3">
             <property name="text">
              <string>Объём на шаг</string>
             </property>
            </widget>
           </item>
-          <item row="5" column="1">
+          <item row="6" column="1">
            <widget class="QSpinBox" name="StepVolume">
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+            </property>
+            <property name="suffix">
+             <string> лот</string>
             </property>
             <property name="minimum">
              <number>1</number>
@@ -133,27 +136,33 @@
             </property>
            </widget>
           </item>
-          <item row="6" column="0">
+          <item row="7" column="0">
            <widget class="QLabel" name="label_4">
             <property name="text">
              <string>Шаг цены</string>
             </property>
            </widget>
           </item>
-          <item row="1" column="1">
+          <item row="2" column="1">
            <widget class="QDoubleSpinBox" name="StartPrice">
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+            </property>
+            <property name="suffix">
+             <string> руб.</string>
             </property>
             <property name="maximum">
              <double>9999999.000000000000000</double>
             </property>
            </widget>
           </item>
-          <item row="6" column="1">
+          <item row="7" column="1">
            <widget class="QDoubleSpinBox" name="StepPrice">
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+            </property>
+            <property name="suffix">
+             <string> руб.</string>
             </property>
             <property name="minimum">
              <double>0.010000000000000</double>
@@ -163,24 +172,51 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="1">
+          <item row="3" column="1">
            <widget class="QDoubleSpinBox" name="Offset">
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+            </property>
+            <property name="suffix">
+             <string> руб.</string>
             </property>
             <property name="maximum">
              <double>999999.000000000000000</double>
             </property>
            </widget>
           </item>
-          <item row="3" column="1">
+          <item row="4" column="1">
            <widget class="QDoubleSpinBox" name="spread">
             <property name="alignment">
              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
             </property>
+            <property name="suffix">
+             <string> руб.</string>
+            </property>
             <property name="maximum">
              <double>999999.000000000000000</double>
             </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="text">
+             <string>Закупаем</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QComboBox" name="VolumeType">
+            <item>
+             <property name="text">
+              <string>На сумму</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>На объём</string>
+             </property>
+            </item>
            </widget>
           </item>
          </layout>

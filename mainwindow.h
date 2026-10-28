@@ -40,6 +40,8 @@ private slots:
     void on_OptName_editingFinished();
     void OrdersRecived(QList<MoexOrder> orders);
 
+    void on_VolumeType_currentIndexChanged(int index);
+
 private:
     Ui::MainWindow *ui;
     Instrument CurrentInstrument;

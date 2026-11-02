@@ -40,8 +40,8 @@ void MainWindow::LoadSettings()
     QString ProgDir=QApplication::applicationDirPath();
     QString FileName=QDir(ProgDir).filePath("Config.txt");
     QSettings Param(FileName,QSettings::IniFormat);
-
-    ui->OptName->setText(Param.value("Ticket","Si87000BJ6D").toString());
+    QStringList Tickers=Param.value("Tickers").toStringList();
+    ui->OrderList->addItems(Tickers);
     ui->PositionVolume->setValue(Param.value("PositionVolume", 10).toUInt());
     ui->StepVolume->setValue(Param.value("StepVolume", 1).toUInt());
     ui->StepPrice->setValue(Param.value("StepPrice", 1).toDouble());
@@ -68,8 +68,10 @@ void MainWindow::SaveSettings()
     QString FileName=QDir(ProgDir).filePath("Config.txt");
     QSettings Param(FileName,QSettings::IniFormat);
     Param.setValue("Application","Размещение Лимиток");
-
-    Param.setValue("Ticket",ui->OptName->text());
+    QStringList Data;
+    for (int i=0;i<ui->OrderList->count();i++)
+        Data<<ui->OrderList->item(i)->text();
+    Param.setValue("Tickers",Data);
     Param.setValue("PositionVolume",ui->PositionVolume->value());
     Param.setValue("StepVolume",ui->StepVolume->value());
     Param.setValue("StepPrice",ui->StepPrice->value());
@@ -198,13 +200,8 @@ void MainWindow::on_ClassCode_currentIndexChanged(int index)
 
 void MainWindow::UpdateInstData()
 {
-    CurrentInstrument.SetParam(ui->OptName->text(),ui->ClassCode->currentData(Qt::UserRole).toString());
+    CurrentInstrument.SetParam(ui->OrderList->currentItem()->text(),ui->ClassCode->currentData(Qt::UserRole).toString());
     BCS.GetOrders(CurrentInstrument);
-}
-
-void MainWindow::on_OptName_editingFinished()
-{
-    UpdateInstData();
 }
 
 void MainWindow::OrdersRecived(QList<MoexOrder> orders)
@@ -244,5 +241,11 @@ void MainWindow::on_VolumeType_currentIndexChanged(int index)
         ui->PositionVolume->setSuffix(" лот");
     else
         ui->PositionVolume->setSuffix(" руб");
+}
+
+
+void MainWindow::on_Instrumments_currentTextChanged(const QString &arg1)
+{
+    UpdateInstData();
 }
 

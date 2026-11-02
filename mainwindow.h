@@ -37,10 +37,11 @@ private slots:
     void on_ClassCode_currentIndexChanged(int index);
     void UpdateInstData();
 
-    void on_OptName_editingFinished();
     void OrdersRecived(QList<MoexOrder> orders);
 
     void on_VolumeType_currentIndexChanged(int index);
+
+    void on_Instrumments_currentTextChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;

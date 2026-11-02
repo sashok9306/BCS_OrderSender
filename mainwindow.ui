@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>870</width>
-    <height>387</height>
+    <height>423</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,7 +16,7 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout">
+     <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1,0">
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
@@ -25,12 +25,15 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="OptName">
-        <property name="text">
-         <string>SiZ6</string>
+       <widget class="QComboBox" name="Instrumments">
+        <property name="layoutDirection">
+         <enum>Qt::LayoutDirection::LeftToRight</enum>
         </property>
-        <property name="alignment">
-         <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+        <property name="currentText">
+         <string>SiZ6</string>
         </property>
        </widget>
       </item>
@@ -263,7 +266,6 @@
   </widget>
  </widget>
  <tabstops>
-  <tabstop>OptName</tabstop>
   <tabstop>OrderType</tabstop>
   <tabstop>PositionVolume</tabstop>
   <tabstop>StepVolume</tabstop>

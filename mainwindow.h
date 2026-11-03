@@ -41,7 +41,7 @@ private slots:
 
     void on_VolumeType_currentIndexChanged(int index);
 
-    void on_Instrumments_currentTextChanged(const QString &arg1);
+    void on_Instrumments_currentIndexChanged(int index);
 
 private:
     Ui::MainWindow *ui;

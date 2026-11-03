@@ -41,7 +41,7 @@ void MainWindow::LoadSettings()
     QString FileName=QDir(ProgDir).filePath("Config.txt");
     QSettings Param(FileName,QSettings::IniFormat);
     QStringList Tickers=Param.value("Tickers").toStringList();
-    ui->OrderList->addItems(Tickers);
+    ui->Instrumments->addItems(Tickers);
     ui->PositionVolume->setValue(Param.value("PositionVolume", 10).toUInt());
     ui->StepVolume->setValue(Param.value("StepVolume", 1).toUInt());
     ui->StepPrice->setValue(Param.value("StepPrice", 1).toDouble());
@@ -68,9 +68,10 @@ void MainWindow::SaveSettings()
     QString FileName=QDir(ProgDir).filePath("Config.txt");
     QSettings Param(FileName,QSettings::IniFormat);
     Param.setValue("Application","Размещение Лимиток");
+
     QStringList Data;
-    for (int i=0;i<ui->OrderList->count();i++)
-        Data<<ui->OrderList->item(i)->text();
+    for (int i=0;i<ui->Instrumments->count();i++)
+        Data<<ui->Instrumments->itemText(i);
     Param.setValue("Tickers",Data);
     Param.setValue("PositionVolume",ui->PositionVolume->value());
     Param.setValue("StepVolume",ui->StepVolume->value());
@@ -200,7 +201,7 @@ void MainWindow::on_ClassCode_currentIndexChanged(int index)
 
 void MainWindow::UpdateInstData()
 {
-    CurrentInstrument.SetParam(ui->OrderList->currentItem()->text(),ui->ClassCode->currentData(Qt::UserRole).toString());
+    CurrentInstrument.SetParam(ui->Instrumments->currentText(),ui->ClassCode->currentData(Qt::UserRole).toString());
     BCS.GetOrders(CurrentInstrument);
 }
 
@@ -243,8 +244,7 @@ void MainWindow::on_VolumeType_currentIndexChanged(int index)
         ui->PositionVolume->setSuffix(" руб");
 }
 
-
-void MainWindow::on_Instrumments_currentTextChanged(const QString &arg1)
+void MainWindow::on_Instrumments_currentIndexChanged(int index)
 {
     UpdateInstData();
 }

@@ -180,7 +180,8 @@ void MainWindow::CancelOrder(QString OrderId, QListWidgetItem *Item)
     delete Item;
     widget->deleteLater();
     BCS.CancelOrder(OrderId);
-    //QTimer::singleShot(500,this,&MainWindow::UpdateInstData);
+    if(ui->OrderList->count()==0)
+        QTimer::singleShot(500,this,&MainWindow::UpdateInstData);
 }
 
 void MainWindow::OrderChange(QString OrderId,int _type,double Price,double Offset,double Spread, Operation op,double quantity)
@@ -190,7 +191,7 @@ void MainWindow::OrderChange(QString OrderId,int _type,double Price,double Offse
         BCS.PlaceTakeProvit(CurrentInstrument,Price,Offset,Spread,quantity,op);
     else
         BCS.PlaceLimitOrder(CurrentInstrument,Price,quantity,op);
-    QTimer::singleShot(500,this,&MainWindow::UpdateInstData);
+    QTimer::singleShot(1000,this,&MainWindow::UpdateInstData);
 }
 
 void MainWindow::on_ClassCode_currentIndexChanged(int index)

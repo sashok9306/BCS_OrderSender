@@ -130,9 +130,6 @@ void BCS_Exc::PlaceLimitOrder(
 
 void BCS_Exc::PlaceMarkettOrder(Instrument &Pair, int volume, Operation op)
 {
-    Order.inst=&Pair;
-    Order.volume=volume;
-    Order.op=op;
     PlaceOrder(Pair, 0,volume, op,"1");
 }
 
@@ -254,9 +251,13 @@ void BCS_Exc::GetOrders(Instrument &Pair)
     Order["orderStatus"]=Status;
     Order["tickers"]=tickers;
     Order["classCodes"]=ClassCode;
+    QUrlQuery query;
+    query.addQueryItem("size","100");
+    query.addQueryItem("page",QString::number(OrdersPage));
     //Order["orderTypes"]=orderTypes;
-
-    requestLocal.setUrl(QUrl("https://be.broker.ru/trade-api-bff-order-details/api/v1/orders/search?size=100"));
+    QUrl url=QUrl("https://be.broker.ru/trade-api-bff-order-details/api/v1/orders/search");
+    url.setQuery(query);
+    requestLocal.setUrl(url);
     QString Reguest = QJsonDocument(Order).toJson();
     QNetworkReply *rep = Manager[0].post(requestLocal, Reguest.toUtf8());
     rep->setParent(&Pair);
@@ -320,7 +321,6 @@ void BCS_Exc::OrderListResult()
     QJsonDocument doc = QJsonDocument::fromJson(ReplayData);
     QJsonObject Root = doc.object();
     QJsonArray Orders=Root["records"].toArray();
-    QList<MoexOrder> InstOrders;
     for(int i=0;i<Orders.size();i++)
     {
         QString OrderId,Ticker,ClassCode; Operation op;
@@ -349,11 +349,22 @@ void BCS_Exc::OrderListResult()
             op=SELL;
         remainedQuantityLots=CurrentOrder["remainedQuantityLots"].toInt();
         MoexOrder newOrder={OrderId,type,Price,Offset,Spread,remainedQuantityLots,op};
-        InstOrders.append(newOrder);
+        _InstOrders.append(newOrder);
     }
     Instrument *inst = qobject_cast<Instrument *>(rep->parent());
     if(inst)
-        inst->SetOrderList(InstOrders);
+    {
+        if(Orders.size())
+        {
+            OrdersPage++;
+            GetOrders(*inst);
+        }else
+        {
+            inst->SetOrderList(_InstOrders);
+            _InstOrders.clear();
+            OrdersPage=0;
+        }
+    }
 }
 
 void BCS_Exc::SocketStartConnection()

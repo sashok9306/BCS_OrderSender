@@ -57,7 +57,8 @@ private:
     quint64 counter=0;
     Candle CurrentCandle;
     QString _TimeFrame;
-    LastOrder Order;
+    int OrdersPage=0;
+    QList<MoexOrder> _InstOrders;
 public:
 };
 

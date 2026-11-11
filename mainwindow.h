@@ -8,6 +8,7 @@
 #include <QSettings>
 #include <QMessageBox>
 #include <Order.h>
+#include <SetupKey.h>
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;

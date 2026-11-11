@@ -10,6 +10,7 @@ SOURCES += \
     BCS_Exc.cpp \
     Instrument.cpp \
     Order.cpp \
+    SetupKey.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -18,13 +19,17 @@ HEADERS += \
     Instrument.h \
     MoexExchangeConnector.h \
     Order.h \
+    SetupKey.h \
     mainwindow.h
-
 FORMS += \
     Order.ui \
+    SetupKey.ui \
     mainwindow.ui
-
+ANDROID_PERMISSIONS = \
+        android.permission.INTERNET \
+        android.permission.ACCESS_NETWORK_STATE
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+android: include(D:/Qt/Tools/OpenSslAndroid/openssl.pri)

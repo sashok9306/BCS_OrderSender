@@ -312,7 +312,7 @@ void BCS_Exc::OrderListResult()
     // ️Сначала проверяем ошибку!
     if (rep->error() != QNetworkReply::NoError) {
         qDebug()<<rep->readAll();
-        emit MessageEvent("❌ Ошибка выставления ордера " + rep->errorString());
+        emit MessageEvent("❌ Ошибка получения заявок " + rep->errorString());
         rep->deleteLater();
         return;
     }

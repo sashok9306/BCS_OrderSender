@@ -14,9 +14,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->ClassCode->addItem("Опцион","SPBOPT");
     LoadSettings();
     BCS.SetRefrashToken(GlobalToken);
-    BCS.GetAccesToken();
+    BCS.Connect();
 
-    QTimer::singleShot(1000,this,&MainWindow::UpdateInstData);
+    QTimer::singleShot(1500,this,&MainWindow::UpdateInstData);
 
     //InstForOpenOrders=new Instrument();
     //InstForOpenOrders->SetParam(ui->OptName->text(),ui->ClassCode->currentData(Qt::UserRole).toString());
@@ -37,9 +37,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::LoadSettings()
 {
+#ifndef Q_OS_ANDROID
     QString ProgDir=QApplication::applicationDirPath();
     QString FileName=QDir(ProgDir).filePath("Config.txt");
     QSettings Param(FileName,QSettings::IniFormat);
+#else
+    QSettings Param("MakarovDeveloper","LimitSender");
+#endif
+
     QStringList Tickers=Param.value("Tickers").toStringList();
     ui->Instrumments->addItems(Tickers);
     ui->PositionVolume->setValue(Param.value("PositionVolume", 10).toUInt());
@@ -56,7 +61,10 @@ void MainWindow::LoadSettings()
     GlobalToken=Param.value("Token","").toString();
     if(GlobalToken.size()==0)
     {
-        QMessageBox::critical(this,"Ошибка","Пропишите ключ доступа в конфиг файл\nи перезапустите приложение",QMessageBox::Ok);
+        SetupKey KeyWindow;
+        KeyWindow.show();
+        KeyWindow.exec();
+        GlobalToken=KeyWindow.Key;
         SaveSettings();
         exit(1);
     }
@@ -64,9 +72,13 @@ void MainWindow::LoadSettings()
 
 void MainWindow::SaveSettings()
 {
+#ifndef Q_OS_ANDROID
     QString ProgDir=QApplication::applicationDirPath();
     QString FileName=QDir(ProgDir).filePath("Config.txt");
     QSettings Param(FileName,QSettings::IniFormat);
+#else
+    QSettings Param("MakarovDeveloper","LimitSender");
+#endif
     Param.setValue("Application","Размещение Лимиток");
 
     QStringList Data;
@@ -82,6 +94,7 @@ void MainWindow::SaveSettings()
     Param.setValue("OrderType",ui->OrderType->currentIndex());
     Param.setValue("Spread",ui->spread->value());
     Param.setValue("Offset",ui->Offset->value());
+    Param.setValue("Token",GlobalToken);
     ui->OrderType->setCurrentIndex(Param.value("OrderType", 0).toUInt());
     Param.sync();
 }

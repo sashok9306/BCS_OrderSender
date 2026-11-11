@@ -256,7 +256,7 @@ void BCS_Exc::GetOrders(Instrument &Pair)
     Order["classCodes"]=ClassCode;
     //Order["orderTypes"]=orderTypes;
 
-    requestLocal.setUrl(QUrl("https://be.broker.ru/trade-api-bff-order-details/api/v1/orders/search"));
+    requestLocal.setUrl(QUrl("https://be.broker.ru/trade-api-bff-order-details/api/v1/orders/search?size=100"));
     QString Reguest = QJsonDocument(Order).toJson();
     QNetworkReply *rep = Manager[0].post(requestLocal, Reguest.toUtf8());
     rep->setParent(&Pair);

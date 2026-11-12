@@ -44,6 +44,8 @@ private slots:
 
     void on_Instrumments_currentIndexChanged(int index);
 
+    void on_tabWidget_currentChanged(int index);
+
 private:
     Ui::MainWindow *ui;
     Instrument CurrentInstrument;

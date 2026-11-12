@@ -9,7 +9,7 @@ Order::Order(MoexOrder ord, QListWidgetItem *Item, QWidget *parent)
     item=Item;
     _ORDER=ord;
     ui->Price->setValue(_ORDER.Price);
-    ui->Vol->setText(QString::number(_ORDER.Volume));
+    ui->Vol->setValue(_ORDER.Volume);
     if(_ORDER.Op==BUY)
         ui->Side->setStyleSheet("background-color: rgb(0, 255, 0);");
     else
@@ -40,6 +40,6 @@ void Order::on_Cancel_clicked()
 
 void Order::on_Ok_clicked()
 {
-    emit OrderChange(_ORDER.OrderId,_ORDER.type,ui->Price->value(),ui->offset->value(),ui->Spread->value(),_ORDER.Op,_ORDER.Volume);
+    emit OrderChange(_ORDER.OrderId,_ORDER.type,ui->Price->value(),ui->offset->value(),ui->Spread->value(),_ORDER.Op,ui->Vol->value());
 }
 

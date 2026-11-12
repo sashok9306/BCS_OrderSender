@@ -1,10 +1,14 @@
 ﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
+#define VERSION "v1.1.1"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    QCoreApplication::setApplicationVersion(VERSION);
+
+    setWindowTitle("Лимитки на срочный рынок "+QCoreApplication::applicationVersion());
     connect(&TimForSendPos,&QTimer::timeout,this,&MainWindow::SendOrder);
 
     connect(&BCS, &StockConnector::MessageEvent, this, &MainWindow::PrintLog,Qt::QueuedConnection);
@@ -210,7 +214,7 @@ void MainWindow::OrderChange(QString OrderId,int _type,double Price,double Offse
 void MainWindow::on_ClassCode_currentIndexChanged(int index)
 {
     Q_UNUSED(index)
-    //UpdateInstData();
+    UpdateInstData();
 }
 
 void MainWindow::UpdateInstData()
@@ -261,5 +265,12 @@ void MainWindow::on_VolumeType_currentIndexChanged(int index)
 void MainWindow::on_Instrumments_currentIndexChanged(int index)
 {
     UpdateInstData();
+}
+
+
+void MainWindow::on_tabWidget_currentChanged(int index)
+{
+    if(index)
+        UpdateInstData();
 }
 

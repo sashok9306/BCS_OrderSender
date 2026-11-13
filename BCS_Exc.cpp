@@ -135,9 +135,6 @@ void BCS_Exc::PlaceMarkettOrder(Instrument &Pair, int volume, Operation op)
 
 void BCS_Exc::PlaceTakeProvit(Instrument &Pair, double price, double offset, double spread, int volume, Operation op)
 {
-#ifdef EMULATION
-    return;
-#endif
     if(volume<0)
         volume*=-1;
     QJsonObject Order;
@@ -172,6 +169,42 @@ void BCS_Exc::PlaceTakeProvit(Instrument &Pair, double price, double offset, dou
     QNetworkReply *rep = Manager[0].post(requestLocal, Reguest.toUtf8());
     connect(rep, &QNetworkReply::finished, this, &BCS_Exc::OrderResult,Qt::QueuedConnection);
     emit MessageEvent(OpStr + Pair.GetTicker());
+}
+
+void BCS_Exc::ChangeOrder(MoexOrder ModOrder, double NewPrice, double NewOffset, double NewSpread, int NewVolume)
+{
+    if(NewVolume<0)
+        NewVolume*=-1;
+    QJsonObject Order;
+    QString OpStr;
+    Order["orderIdType"] = "2";
+    Order["orderId"] = ModOrder.OrderId;
+    Order["clientOrderId"] = QUuid::createUuid().toString(QUuid::WithoutBraces);
+    Order["orderQuantity"] = NewVolume;
+    if(ModOrder.type==0)
+    {
+        Order["orderType"] = "2";
+        Order["price"] = NewPrice;
+    }
+    else
+    {
+        Order["orderType"] = "5";
+        Order["takePrice"] = NewPrice;
+        Order["executionTakeProfitType"] = 2;
+        Order["spread"] = NewSpread;
+        Order["offset"] = NewOffset;
+    }
+
+    QNetworkRequest requestLocal;
+    requestLocal.setRawHeader("Accept", "application/json");
+    requestLocal.setRawHeader("Content-Type", "application/json");
+    requestLocal.setRawHeader("Authorization", ("Bearer " + AccesToken).toUtf8());
+
+    requestLocal.setUrl(QUrl("https://be.broker.ru/trade-api-bff-operations/api/v1/orders/edit"));
+    QString Reguest = QJsonDocument(Order).toJson();
+    QNetworkReply *rep = Manager[0].post(requestLocal, Reguest.toUtf8());
+    connect(rep, &QNetworkReply::finished, this, &BCS_Exc::OrderResult,Qt::QueuedConnection);
+    emit MessageEvent("Ордер изменён");
 }
 
 void BCS_Exc::GetAccesToken()
@@ -383,9 +416,6 @@ void BCS_Exc::SocketStartConnection()
 
 void BCS_Exc::PlaceOrder(Instrument &Pair, double price, int volume, Operation op, QString Type)
 {
-#ifdef EMULATION
-    return;
-#endif
     if(volume<0)
         volume*=-1;
     QJsonObject Order;

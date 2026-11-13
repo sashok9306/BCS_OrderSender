@@ -23,8 +23,8 @@ private slots:
     void on_Ok_clicked();
 
 signals:
-    void OrderCancel(QString OrderId,QListWidgetItem *Item);
-    void OrderChange(QString OrderId,int _type,double Price,double Offset,double Spread, Operation op,double quantity);
+    void OrderCancel(MoexOrder ORDER,QListWidgetItem *Item);
+    void OrderChange(MoexOrder ORDER,double Price,double Offset,double Spread, double quantity);
 private:
     Ui::Order *ui;
     MoexOrder _ORDER;

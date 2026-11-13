@@ -52,6 +52,7 @@ public slots:
     void PlaceLimitOrder(Instrument &Pair, double price, int volume, Operation op);
     void PlaceMarkettOrder(Instrument &Pair, int volume, Operation op);
     void PlaceTakeProvit(Instrument &Pair,double price,double offset,double spread, int volume, Operation op);
+    void ChangeOrder(MoexOrder Order,double NewPrice,double NewOffset,double NewSpread, int NewVolume);
 private:
     QThread BaseTh;
     quint64 counter=0;

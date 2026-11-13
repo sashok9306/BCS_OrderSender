@@ -35,11 +35,11 @@ Order::~Order()
 
 void Order::on_Cancel_clicked()
 {
-    emit OrderCancel(_ORDER.OrderId,item);
+    emit OrderCancel(_ORDER,item);
 }
 
 void Order::on_Ok_clicked()
 {
-    emit OrderChange(_ORDER.OrderId,_ORDER.type,ui->Price->value(),ui->offset->value(),ui->Spread->value(),_ORDER.Op,ui->Vol->value());
+    emit OrderChange(_ORDER,ui->Price->value(),ui->offset->value(),ui->Spread->value(),ui->Vol->value());
 }
 

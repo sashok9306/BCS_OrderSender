@@ -32,8 +32,8 @@ private slots:
     void PrintLog(QString Message);
 
     void on_OrderType_currentIndexChanged(int index);
-    void CancelOrder(QString OrderId,QListWidgetItem *Item);
-    void OrderChange(QString OrderId, int _type, double Price, double Offset, double Spread, Operation op, double quantity);
+    void CancelOrder(MoexOrder ORDER, QListWidgetItem *Item);
+    void OrderChange(MoexOrder ORDER, double Price, double Offset, double Spread, double quantity);
 
     void on_ClassCode_currentIndexChanged(int index);
     void UpdateInstData();

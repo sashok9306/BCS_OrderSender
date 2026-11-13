@@ -187,7 +187,7 @@ void MainWindow::on_OrderType_currentIndexChanged(int index)
     }
 }
 
-void MainWindow::CancelOrder(QString OrderId, QListWidgetItem *Item)
+void MainWindow::CancelOrder(MoexOrder ORDER, QListWidgetItem *Item)
 {
     QWidget *widget = qobject_cast<QWidget *>(sender());
     if(!widget)
@@ -196,18 +196,14 @@ void MainWindow::CancelOrder(QString OrderId, QListWidgetItem *Item)
         return;
     delete Item;
     widget->deleteLater();
-    BCS.CancelOrder(OrderId);
+    BCS.CancelOrder(ORDER.OrderId);
     if(ui->OrderList->count()==0)
         QTimer::singleShot(1500,this,&MainWindow::UpdateInstData);
 }
 
-void MainWindow::OrderChange(QString OrderId,int _type,double Price,double Offset,double Spread, Operation op,double quantity)
+void MainWindow::OrderChange(MoexOrder ORDER, double Price, double Offset, double Spread, double quantity)
 {
-    BCS.CancelOrder(OrderId);
-    if(_type)
-        BCS.PlaceTakeProvit(CurrentInstrument,Price,Offset,Spread,quantity,op);
-    else
-        BCS.PlaceLimitOrder(CurrentInstrument,Price,quantity,op);
+    BCS.ChangeOrder(ORDER,Price,Offset,Spread,quantity);
     QTimer::singleShot(1500,this,&MainWindow::UpdateInstData);
 }
 

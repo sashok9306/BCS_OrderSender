@@ -1,0 +1,3 @@
+[submodule "BCS_CONNECTOR"]
+	path = BCS_CONNECTOR
+	url = git@github.com:sashok9306/BCS_CONNECTOR.git

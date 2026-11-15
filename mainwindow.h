@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 #include <QTimer>
-#include <BCS_Exc.h>
+#include <BCS_CONNECTOR/BCS_Exc.h>
 #include <QDir>
 #include <QSettings>
 #include <QMessageBox>
@@ -48,7 +48,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    Instrument CurrentInstrument;
+    Instrument *CurrentInstrument;
+    QHash<QString,Instrument*>ControlledInstrumments;
     QTimer TimForSendPos;
     bool Bay;
     QString GlobalToken;

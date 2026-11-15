@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(&TimForSendPos,&QTimer::timeout,this,&MainWindow::SendOrder);
 
     connect(&BCS, &StockConnector::MessageEvent, this, &MainWindow::PrintLog,Qt::QueuedConnection);
-    connect(&CurrentInstrument, &Instrument::CurrentOrdersRecived, this, &MainWindow::OrdersRecived,Qt::QueuedConnection);
+    //connect(&CurrentInstrument, &Instrument::CurrentOrdersRecived, this, &MainWindow::OrdersRecived,Qt::QueuedConnection);
 
     ui->ClassCode->addItem("Фьючерс","SPBFUT");
     ui->ClassCode->addItem("Опцион","SPBOPT");
@@ -154,17 +154,17 @@ void MainWindow::SendOrder()
     {
         ui->StartPrice->setValue(OrderPrice-ui->StepPrice->value());
         if(ui->OrderType->currentIndex()==0)
-            BCS.PlaceLimitOrder(CurrentInstrument,OrderPrice,OrderValue,BUY);
+            BCS.PlaceLimitOrder(ui->Instrumments->currentText(),ui->ClassCode->currentData(Qt::UserRole).toString(),OrderPrice,OrderValue,BUY);
         else
-            BCS.PlaceTakeProvit(CurrentInstrument,OrderPrice,ui->Offset->value(),ui->spread->value(),OrderValue,BUY);
+            BCS.PlaceTakeProvit(ui->Instrumments->currentText(),ui->ClassCode->currentData(Qt::UserRole).toString(),OrderPrice,ui->Offset->value(),ui->spread->value(),OrderValue,BUY);
     }
     else
     {
         ui->StartPrice->setValue(OrderPrice+ui->StepPrice->value());
         if(ui->OrderType->currentIndex()==0)
-            BCS.PlaceLimitOrder(CurrentInstrument,OrderPrice,OrderValue,SELL);
+            BCS.PlaceLimitOrder(ui->Instrumments->currentText(),ui->ClassCode->currentData(Qt::UserRole).toString(),OrderPrice,OrderValue,SELL);
         else
-            BCS.PlaceTakeProvit(CurrentInstrument,OrderPrice,ui->Offset->value(),ui->spread->value(),OrderValue,SELL);
+            BCS.PlaceTakeProvit(ui->Instrumments->currentText(),ui->ClassCode->currentData(Qt::UserRole).toString(),OrderPrice,ui->Offset->value(),ui->spread->value(),OrderValue,SELL);
     }
 }
 
@@ -196,9 +196,7 @@ void MainWindow::CancelOrder(MoexOrder ORDER, QListWidgetItem *Item)
         return;
     delete Item;
     widget->deleteLater();
-    BCS.CancelOrder(ORDER.OrderId);
-    if(ui->OrderList->count()==0)
-        QTimer::singleShot(1500,this,&MainWindow::UpdateInstData);
+    BCS.CancelOrder(ORDER);
 }
 
 void MainWindow::OrderChange(MoexOrder ORDER, double Price, double Offset, double Spread, double quantity)
@@ -215,8 +213,11 @@ void MainWindow::on_ClassCode_currentIndexChanged(int index)
 
 void MainWindow::UpdateInstData()
 {
-    CurrentInstrument.SetParam(ui->Instrumments->currentText(),ui->ClassCode->currentData(Qt::UserRole).toString());
-    BCS.GetOrders(CurrentInstrument);
+    if(ControlledInstrumments.value(ui->Instrumments->currentText())==nullptr)
+    {
+        ControlledInstrumments[ui->Instrumments->currentText()]=BCS.CreateInstrument(ui->Instrumments->currentText(),ui->ClassCode->currentData(Qt::UserRole).toString());
+    }
+    //BCS.GetOrders();
 }
 
 void MainWindow::OrdersRecived(QList<MoexOrder> orders)

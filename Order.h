@@ -1,7 +1,7 @@
 ﻿#ifndef ORDER_H
 #define ORDER_H
 
-#include "Instrument.h"
+#include <BCS_CONNECTOR/Instrument.h>
 #include <QWidget>
 #include <QString>
 #include <QListWidgetItem>

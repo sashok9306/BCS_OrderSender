@@ -9,26 +9,31 @@ namespace Ui {
 class Order;
 }
 
-class Order : public QWidget
+class OrderWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit Order(MoexOrder ord,QListWidgetItem *Item,QWidget *parent = nullptr);
-    ~Order();
+    explicit OrderWidget(MoexOrder ord,QListWidgetItem *Item,QWidget *parent = nullptr);
+    void UpdateOrderData(MoexOrder ORDER);
+    ~OrderWidget();
 
 private slots:
     void on_Cancel_clicked();
 
     void on_Ok_clicked();
+public slots:
+    MoexOrder GetOrder();
+    QListWidgetItem *GetItem();
 
 signals:
-    void OrderCancel(MoexOrder ORDER,QListWidgetItem *Item);
+    void OrderCancel(MoexOrder ORDER);
     void OrderChange(MoexOrder ORDER,double Price,double Offset,double Spread, double quantity);
+public:
 private:
     Ui::Order *ui;
-    MoexOrder _ORDER;
     QListWidgetItem *item;
+    MoexOrder _ORDER;
 };
 
 #endif // ORDER_H

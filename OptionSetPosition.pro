@@ -9,6 +9,7 @@ CONFIG += c++17
 SOURCES += \
     BCS_CONNECTOR/BCS_Exc.cpp \
     BCS_CONNECTOR/Instrument.cpp \
+    ClassCodeDialog.cpp \
     Order.cpp \
     SetupKey.cpp \
     main.cpp \
@@ -18,10 +19,12 @@ HEADERS += \
     BCS_CONNECTOR/BCS_Exc.h \
     BCS_CONNECTOR/Instrument.h \
     BCS_CONNECTOR/MoexExchangeConnector.h \
+    ClassCodeDialog.h \
     Order.h \
     SetupKey.h \
     mainwindow.h
 FORMS += \
+    ClassCodeDialog.ui \
     Order.ui \
     SetupKey.ui \
     mainwindow.ui

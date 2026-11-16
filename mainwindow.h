@@ -32,24 +32,21 @@ private slots:
     void PrintLog(QString Message);
 
     void on_OrderType_currentIndexChanged(int index);
-    void CancelOrder(MoexOrder ORDER, QListWidgetItem *Item);
-    void OrderChange(MoexOrder ORDER, double Price, double Offset, double Spread, double quantity);
+    void OrderUpdate(MoexOrder UpOrder);
 
-    void on_ClassCode_currentIndexChanged(int index);
-    void UpdateInstData();
-
-    void OrdersRecived(QList<MoexOrder> orders);
+    void OrdersRecive(QHash<QString, MoexOrder> orders);
 
     void on_VolumeType_currentIndexChanged(int index);
 
     void on_Instrumments_currentIndexChanged(int index);
 
-    void on_tabWidget_currentChanged(int index);
+    void CreateWidgetInOrderList(int index,MoexOrder DataOrder);
 
 private:
     Ui::MainWindow *ui;
     Instrument *CurrentInstrument;
     QHash<QString,Instrument*>ControlledInstrumments;
+    QHash<QString,OrderWidget*>WidgetOrderControll;
     QTimer TimForSendPos;
     bool Bay;
     QString GlobalToken;

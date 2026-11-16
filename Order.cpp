@@ -1,19 +1,24 @@
 ﻿#include "Order.h"
 #include "ui_Order.h"
 
-Order::Order(MoexOrder ord, QListWidgetItem *Item, QWidget *parent)
+OrderWidget::OrderWidget(MoexOrder ord, QListWidgetItem *Item, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::Order)
 {
     ui->setupUi(this);
     item=Item;
-    _ORDER=ord;
+    UpdateOrderData(ord);
+}
+
+void OrderWidget::UpdateOrderData(MoexOrder ORDER)
+{
+    _ORDER=ORDER;
     ui->Price->setValue(_ORDER.Price);
     ui->Vol->setValue(_ORDER.Volume);
     if(_ORDER.Op==BUY)
         ui->Side->setStyleSheet("background-color: rgb(0, 255, 0);");
     else
-       ui->Side->setStyleSheet("background-color: rgb(255, 0, 0);");
+        ui->Side->setStyleSheet("background-color: rgb(255, 0, 0);");
     if(_ORDER.type)
     {
         ui->offset->setValue(_ORDER.Offset);
@@ -28,18 +33,28 @@ Order::Order(MoexOrder ord, QListWidgetItem *Item, QWidget *parent)
     }
 }
 
-Order::~Order()
+OrderWidget::~OrderWidget()
 {
     delete ui;
 }
 
-void Order::on_Cancel_clicked()
+void OrderWidget::on_Cancel_clicked()
 {
-    emit OrderCancel(_ORDER,item);
+    emit OrderCancel(_ORDER);
 }
 
-void Order::on_Ok_clicked()
+void OrderWidget::on_Ok_clicked()
 {
     emit OrderChange(_ORDER,ui->Price->value(),ui->offset->value(),ui->Spread->value(),ui->Vol->value());
+}
+
+MoexOrder OrderWidget::GetOrder()
+{
+    return _ORDER;
+}
+
+QListWidgetItem *OrderWidget::GetItem()
+{
+    return item;
 }
 

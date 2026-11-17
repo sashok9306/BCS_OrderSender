@@ -1,7 +1,7 @@
 ﻿#include "mainwindow.h"
 #include "ClassCodeDialog.h"
 #include "ui_mainwindow.h"
-#define VERSION "v1.2.0a"
+#define VERSION "v1.2.1"
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -319,5 +319,13 @@ void MainWindow::CreateWidgetInOrderList(int index, MoexOrder DataOrder)
     ui->OrderList->setItemWidget(Item,NewOrder);
     connect(NewOrder,&OrderWidget::OrderCancel,&BCS,&BCS_Exc::CancelOrder);
     connect(NewOrder,&OrderWidget::OrderChange,&BCS,&BCS_Exc::ChangeOrder);
+}
+
+
+void MainWindow::on_DeleteInstrumment_clicked()
+{
+    if(ui->Instrumments->count()<=1)
+        return;
+    ui->Instrumments->removeItem(ui->Instrumments->currentIndex());
 }
 

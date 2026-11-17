@@ -42,6 +42,8 @@ private slots:
 
     void CreateWidgetInOrderList(int index,MoexOrder DataOrder);
 
+    void on_DeleteInstrumment_clicked();
+
 private:
     Ui::MainWindow *ui;
     Instrument *CurrentInstrument;
